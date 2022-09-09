@@ -39,6 +39,16 @@ Function.prototype.myBind = function(context, ...args) {
 }
 
 
+//EST 5 way
+Function.prototype.myBind2 = function(context, ...bindArgs) {
+  let that = this;
+
+  return function(...callArgs) {
+      let args = bindArgs.concat(callArgs)
+    return that.apply(context, args);
+  }
+}
+
 class Cat {
     constructor(name) {
       this.name = name;
@@ -61,9 +71,9 @@ class Cat {
   
 //   markov.says("meow", "Ned");
 
-//   markov.says.myBind(pavlov, "meow", "Kush")();
-// markov.says.myBind(pavlov)("meow", "a tree");
-// markov.says.myBind(pavlov, "meow")("Markov");
+  markov.says.myBind2(pavlov, "meow", "Kush")();
+markov.says.myBind(pavlov)("meow", "a tree");
+markov.says.myBind(pavlov, "meow")("Markov");
 
 function curriedSum(numArgs) {
     let numbers = [];
@@ -127,8 +137,8 @@ function product(...nums) {
 }
 
 
-const test = sum.curry(4);
-console.log(test(5)(30)(20)(1)); //56
+// const test = sum.curry(4);
+// console.log(test(5)(30)(20)(1)); //56
 
-const ptest = product.curry(3);
-console.log(ptest(2)(2)(2));
+// const ptest = product.curry(3);
+// console.log(ptest(2)(2)(2));
