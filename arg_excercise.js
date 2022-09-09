@@ -61,6 +61,74 @@ class Cat {
   
 //   markov.says("meow", "Ned");
 
-  markov.says.myBind(pavlov, "meow", "Kush")();
-markov.says.myBind(pavlov)("meow", "a tree");
-markov.says.myBind(pavlov, "meow")("Markov");
+//   markov.says.myBind(pavlov, "meow", "Kush")();
+// markov.says.myBind(pavlov)("meow", "a tree");
+// markov.says.myBind(pavlov, "meow")("Markov");
+
+function curriedSum(numArgs) {
+    let numbers = [];
+    let sum = 0;
+    const _curriedSum = (num) => { 
+        // console.log(this);
+        numbers.push(num);
+        if (numbers.length === numArgs) {
+            for (let number of numbers) {
+                sum += number;
+            } 
+            return sum;
+        } else {
+            return _curriedSum;
+        }
+    }
+    return _curriedSum;
+}
+
+const bloop = curriedSum(4);
+// console.log(bloop(5)(30)(20)(1)); // => 56
+
+Function.prototype.curry = function(numArgs) {
+    let args = [];
+    const that = this
+    // console.log(this)
+    // console.log(that)
+
+    function _curry(num) {
+        // here this gets lost
+        args.push(num);
+        // console.log(this)
+
+        if (args.length === numArgs) {
+            // return that(...args)
+            return that.apply(null, args) //function.apply(context. argarr)
+        } else {
+            return _curry;
+        }
+    }
+    return _curry;
+}
+
+function sum(...nums) {
+    let tsum = 0;
+
+    for (let num of nums) {
+        tsum += num;
+    }
+    return tsum
+}
+
+
+function product(...nums) {
+    let tsum = 0;
+
+    for (let product of nums) {
+        tsum += product;
+    }
+    return tsum
+}
+
+
+const test = sum.curry(4);
+console.log(test(5)(30)(20)(1)); //56
+
+const ptest = product.curry(3);
+console.log(ptest(2)(2)(2));
